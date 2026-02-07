@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - E-Commerce Site</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>E-Commerce</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/products" class="nav-link">Products</a></li>
+                    <% if (user) { %>
+                        <li><a href="/cart" class="nav-link">Cart</a></li>
+                        <li><a href="/orders" class="nav-link">Orders</a></li>
+                        <li><a href="/profile" class="nav-link">Profile</a></li>
+                        <% if (user.role === 'admin') { %>
+                            <li><a href="/admin" class="nav-link">Admin</a></li>
+                        <% } %>
+                        <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+                    <% } else { %>
+                        <li><a href="/auth/login" class="nav-link">Login</a></li>
+                        <li><a href="/auth/register" class="nav-link">Register</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Checkout Header Section -->
+    <section class="checkout-header-section">
+        <div class="container">
+            <h1 class="section-title">Checkout</h1>
+            <p class="checkout-subtitle">Complete your purchase</p>
+        </div>
+    </section>
+
+    <!-- Checkout Content Section -->
+    <section class="checkout-content-section">
+        <div class="container">
+            <form action="/orders/place" method="POST" class="checkout-layout">
+                <!-- Left Column: Forms -->
+                <div class="checkout-form-sections">
+                    <!-- Shipping Address Card -->
+                    <div class="checkout-card">
+                        <div class="checkout-card-header">
+                            <h3 class="checkout-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 7L12 13L4 7V5L12 11L20 5V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Shipping Address
+                            </h3>
+                        </div>
+                        <div class="checkout-card-body">
+                            <div class="form-row">
+                                <div class="form-group form-group-full">
+                                    <label for="address" class="form-label">Address</label>
+                                    <textarea id="address" name="address" class="form-input form-textarea" placeholder="Enter your full address" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" id="city" name="city" class="form-input" placeholder="Enter city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="zipcode" class="form-label">Zip Code</label>
+                                    <input type="text" id="zipcode" name="zipcode" class="form-input" placeholder="Enter zip code" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Card -->
+                    <div class="checkout-card">
+                        <div class="checkout-card-header">
+                            <h3 class="checkout-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                                    <line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" stroke-width="2"/>
+                                </svg>
+                                Payment Details
+                            </h3>
+                        </div>
+                        <div class="checkout-card-body">
+                            <div class="form-row">
+                                <div class="form-group form-group-full">
+                                    <label for="payment_method" class="form-label">Payment Method</label>
+                                    <select id="payment_method" name="payment_method" class="form-input form-select" required>
+                                        <option value="credit_card">Credit Card</option>
+                                        <option value="paypal">PayPal</option>
+                                        <option value="cod">Cash on Delivery</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="credit_card_fields" class="payment-fields">
+                                <div class="payment-notice">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    Your payment information is secure and encrypted.
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group form-group-full">
+                                        <label for="card_number" class="form-label">Card Number</label>
+                                        <input type="text" id="card_number" name="card_number" class="form-input" placeholder="1234 5678 9012 3456">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="expiry_date" class="form-label">Expiry Date</label>
+                                        <input type="text" id="expiry_date" name="expiry_date" class="form-input" placeholder="MM/YY">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <input type="text" id="cvv" name="cvv" class="form-input" placeholder="123">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Order Summary -->
+                <div class="checkout-summary">
+                    <div class="checkout-card">
+                        <div class="checkout-card-header">
+                            <h3 class="checkout-card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Order Summary
+                            </h3>
+                        </div>
+                        <div class="checkout-card-body">
+                            <div class="order-items-list">
+                                <% cartItems.forEach(item => { %>
+                                    <div class="order-item-modern">
+                                        <div class="order-item-info">
+                                            <div class="order-item-name"><%= item.name %></div>
+                                            <div class="order-item-quantity">Qty: <%= item.quantity %></div>
+                                        </div>
+                                        <div class="order-item-price">$<%= (item.price * item.quantity).toFixed(2) %></div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                            <div class="order-summary-divider"></div>
+                            <div class="order-total-modern">
+                                <div class="order-total-row">
+                                    <span>Subtotal</span>
+                                    <span>$<%= total.toFixed(2) %></span>
+                                </div>
+                                <div class="order-total-row">
+                                    <span>Shipping</span>
+                                    <span>Free</span>
+                                </div>
+                                <div class="order-total-row order-total-final">
+                                    <span>Total</span>
+                                    <span>$<%= total.toFixed(2) %></span>
+                                </div>
+                            </div>
+                            <button type="submit" class="checkout-submit-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Place Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>E-Commerce</h3>
+                    <p>Your one-stop shop for all your needs. Quality products at affordable prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/products">Products</a></li>
+                        <% if (user) { %>
+                            <li><a href="/cart">Cart</a></li>
+                            <li><a href="/orders">Orders</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>

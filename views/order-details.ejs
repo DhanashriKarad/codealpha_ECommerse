@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - E-Commerce Site</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>E-Commerce</h1>
+            </div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <% if (user.role === 'admin') { %>
+                    <li><a href="/admin">Admin</a></li>
+                <% } %>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="padding-top: 80px;">
+        <h2>Order Details</h2>
+        <div class="order-details">
+            <div class="order-info">
+                <h3>Order #<%= order.id %></h3>
+                <p><strong>Date:</strong> <%= new Date(order.created_at).toLocaleDateString() %></p>
+                <p><strong>Status:</strong> <%= order.status %></p>
+                <p><strong>Total:</strong> $<%= order.total_amount %></p>
+                <p><strong>Payment Method:</strong> <%= order.payment_method %></p>
+            </div>
+
+            <div class="shipping-info">
+                <h3>Shipping Address</h3>
+                <p><%= order.shipping_address %></p>
+                <p><%= order.city %>, <%= order.zipcode %></p>
+            </div>
+
+            <div class="order-items">
+                <h3>Items</h3>
+                <% orderItems.forEach(item => { %>
+                    <div class="order-item">
+                        <img src="<%= item.image_url %>" alt="<%= item.name %>" style="width: 50px; height: 50px;">
+                        <div>
+                            <p><strong><%= item.name %></strong></p>
+                            <p>Quantity: <%= item.quantity %> | Price: $<%= item.price %></p>
+                            <p>Subtotal: $<%= (item.price * item.quantity).toFixed(2) %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

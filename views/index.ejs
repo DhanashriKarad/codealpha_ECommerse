@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Site</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>E-Commerce</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/products" class="nav-link">Products</a></li>
+                    <% if (user) { %>
+                        <li><a href="/cart" class="nav-link">Cart</a></li>
+                        <li><a href="/orders" class="nav-link">Orders</a></li>
+                        <li><a href="/profile" class="nav-link">Profile</a></li>
+                        <% if (user.role === 'admin') { %>
+                            <li><a href="/admin" class="nav-link">Admin</a></li>
+                        <% } %>
+                        <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+                    <% } else { %>
+                        <li><a href="/auth/login" class="nav-link">Login</a></li>
+                        <li><a href="/auth/register" class="nav-link">Register</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section with background image -->
+        <section class="hero">
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h1 class="hero-title">Welcome to Our E-Commerce Store</h1>
+                    <p class="hero-subtitle">Discover amazing products at great prices. Shop the latest trends and find everything you need.</p>
+                    <a href="/products" class="hero-btn">Shop Now</a>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>E-Commerce</h3>
+                    <p>Your one-stop shop for all your needs. Quality products at affordable prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/products">Products</a></li>
+                        <% if (user) { %>
+                            <li><a href="/cart">Cart</a></li>
+                            <li><a href="/orders">Orders</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

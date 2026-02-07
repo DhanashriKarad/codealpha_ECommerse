@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= action === 'add' ? 'Add' : 'Edit' %> Product - Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>E-Commerce Admin</h1>
+            </div>
+            <ul>
+                <li><a href="/admin">Dashboard</a></li>
+                <li><a href="/">View Site</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2><%= action === 'add' ? 'Add New' : 'Edit' %> Product</h2>
+
+        <form action="<%= action === 'add' ? '/admin/products/add' : `/admin/products/edit/${product.id}` %>" method="POST" class="product-form">
+            <div class="form-group">
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" name="name" value="<%= product ? product.name : '' %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" required><%= product ? product.description : '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" value="<%= product ? product.price : '' %>" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category_id">Category:</label>
+                <select id="category_id" name="category_id" required>
+                    <option value="">Select Category</option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.id %>" <%= product && product.category_id == category.id ? 'selected' : '' %>><%= category.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="image_url">Image URL:</label>
+                <input type="url" id="image_url" name="image_url" value="<%= product ? product.image_url : '' %>" placeholder="https://example.com/image.jpg">
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock Quantity:</label>
+                <input type="number" id="stock" name="stock" value="<%= product ? product.stock : '' %>" min="0" required>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn"><%= action === 'add' ? 'Add Product' : 'Update Product' %></button>
+                <a href="/admin" class="btn">Cancel</a>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

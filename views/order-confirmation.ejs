@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - E-Commerce Site</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>E-Commerce</h1>
+            </div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <li><a href="/orders">Orders</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <% if (user.role === 'admin') { %>
+                    <li><a href="/admin">Admin</a></li>
+                <% } %>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="confirmation-container">
+            <h2>Order Confirmation</h2>
+            <div class="confirmation-message">
+                <h3>Thank you for your order!</h3>
+                <p>Your order has been successfully placed.</p>
+            </div>
+
+            <div class="order-summary">
+                <h3>Order Details</h3>
+                <p><strong>Order ID:</strong> <%= order.id %></p>
+                <p><strong>Total Amount:</strong> $<%= order.total_amount %></p>
+                <p><strong>Payment Method:</strong> <%= order.payment_method %></p>
+                <p><strong>Status:</strong> <%= order.status %></p>
+            </div>
+
+            <div class="shipping-info">
+                <h3>Shipping Address</h3>
+                <p><%= order.shipping_address %></p>
+                <p><%= order.city %>, <%= order.zipcode %></p>
+            </div>
+
+            <div class="next-steps">
+                <h3>What happens next?</h3>
+                <ul>
+                    <li>You will receive an email confirmation shortly</li>
+                    <li>Your order will be processed within 1-2 business days</li>
+                    <li>You can track your order status in your <a href="/orders">order history</a></li>
+                </ul>
+            </div>
+
+            <div class="confirmation-actions">
+                <a href="/orders/<%= order.id %>" class="btn">View Order Details</a>
+                <a href="/products" class="btn">Continue Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

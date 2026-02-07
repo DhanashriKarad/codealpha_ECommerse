@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - E-Commerce Site</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>E-Commerce</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/products" class="nav-link active">Products</a></li>
+                    <% if (user) { %>
+                        <li><a href="/cart" class="nav-link">Cart (<%= cartCount || 0 %>)</a></li>
+                        <li><a href="/orders" class="nav-link">Orders</a></li>
+                        <li><a href="/profile" class="nav-link">Profile</a></li>
+                        <% if (user.role === 'admin') { %>
+                            <li><a href="/admin" class="nav-link">Admin</a></li>
+                        <% } %>
+                        <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+                    <% } else { %>
+                        <li><a href="/auth/login" class="nav-link">Login</a></li>
+                        <li><a href="/auth/register" class="nav-link">Register</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Search and Filter Section -->
+        <section class="search-filter-section">
+            <div class="container">
+                <div class="search-container">
+                    <form action="/products" method="GET" class="search-form">
+                        <input type="text" name="search" placeholder="Search products..." value="<%= search || '' %>">
+                        <button type="submit" class="search-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 21L16.5 16.5M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Category Filter Bar - SINGLE INSTANCE ONLY -->
+                <div class="category-filter">
+                    <a href="/products" class="filter-tab active">All Products</a>
+                    <a href="/products?category=1" class="filter-tab">Books</a>
+                    <a href="/products?category=2" class="filter-tab">Clothing</a>
+                    <a href="/products?category=3" class="filter-tab">Electronics</a>
+                    <a href="/products?category=4" class="filter-tab">Sports</a>
+                    <a href="/products?category=5" class="filter-tab">Home</a>
+                    <a href="/products?category=6" class="filter-tab">Other</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section">
+            <div class="container">
+                <div class="products-grid">
+                    <% products.forEach(product => { %>
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="<%= product.image_url || 'https://picsum.photos/280/200?random=' + product.id %>" alt="<%= product.name %>">
+                                <% if (product.stock <= 0) { %>
+                                    <div class="out-of-stock-badge">Out of Stock</div>
+                                <% } %>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><%= product.name %></h3>
+                                <p class="product-category"><%= product.category_name || 'Uncategorized' %></p>
+                                <div class="product-rating">
+                                    <% for (let i = 1; i <= 5; i++) { %>
+                                        <span class="star <%= i <= Math.floor(product.rating || 0) ? 'filled' : '' %>">★</span>
+                                    <% } %>
+                                    <span class="review-count">(<%= product.review_count || 0 %>)</span>
+                                </div>
+                                <div class="product-price">$<%= product.price %></div>
+                                <form action="/cart/add/<%= product.id %>" method="POST" class="add-to-cart-form">
+                                    <button type="submit" class="add-to-cart-btn" <%= product.stock <= 0 ? 'disabled' : '' %>>
+                                        <%= product.stock > 0 ? 'Add to Cart' : 'Out of Stock' %>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <% if (products.length === 0) { %>
+                    <div class="no-products">
+                        <div class="no-products-icon">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.5 7.27783L12 12.0001M12 12.0001L3.49997 7.27783M12 12.0001L12 21.5001M21 9.00008V15.0001C21 15.7957 20.6839 16.5588 20.1213 17.1214C19.5587 17.684 18.7956 18.0001 18 18.0001H6C5.20435 18.0001 4.44129 17.684 3.87868 17.1214C3.31607 16.5588 3 15.7957 3 15.0001V9.00008C3 8.20443 3.31607 7.44137 3.87868 6.87876C4.44129 6.31615 5.20435 6.00008 6 6.00008H18C18.7956 6.00008 19.5587 6.31615 20.1213 6.87876C20.6839 7.44137 21 8.20443 21 9.00008Z" stroke="#6c757d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>No products found</h3>
+                        <p>Try adjusting your search or browse all products.</p>
+                        <a href="/products" class="btn-primary">Browse All Products</a>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>E-Commerce</h3>
+                    <p>Your one-stop shop for all your needs. Quality products at affordable prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/products">Products</a></li>
+                        <% if (user) { %>
+                            <li><a href="/cart">Cart</a></li>
+                            <li><a href="/orders">Orders</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

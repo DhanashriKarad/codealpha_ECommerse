@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - E-Commerce Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <h1>E-Commerce</h1>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/products" class="nav-link">Products</a></li>
+          <% if (user) { %>
+            <li><a href="/cart" class="nav-link">Cart (<%= cartCount || 0 %>)</a></li>
+            <li><a href="/orders" class="nav-link">Orders</a></li>
+            <li><a href="/profile" class="nav-link active">Profile</a></li>
+            <% if (user.role === 'admin') { %>
+              <li><a href="/admin" class="nav-link">Admin</a></li>
+            <% } %>
+            <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+          <% } else { %>
+            <li><a href="/auth/login" class="nav-link">Login</a></li>
+            <li><a href="/auth/register" class="nav-link">Register</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main style="padding: 3rem 0; padding-top: 80px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+    <div class="container">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <div style="background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); overflow: hidden;">
+          <div style="padding: 2rem 2rem 1rem; background: linear-gradient(45deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+            <h2 style="margin: 0; font-weight: 600;">User Profile</h2>
+          </div>
+          <div style="padding: 2rem;">
+            <div class="profile-info" style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <div style="display: flex; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                <div style="flex: 1;">
+                  <strong style="color: #333; font-weight: 600;">Name:</strong>
+                  <p style="margin: 0.25rem 0 0; color: #6c757d;"><%= user.name %></p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                <div style="flex: 1;">
+                  <strong style="color: #333; font-weight: 600;">Email:</strong>
+                  <p style="margin: 0.25rem 0 0; color: #6c757d;"><%= user.email %></p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                <div style="flex: 1;">
+                  <strong style="color: #333; font-weight: 600;">Role:</strong>
+                  <p style="margin: 0.25rem 0 0; color: #6c757d;"><%= user.role %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>E-Commerce</h3>
+          <p>Your one-stop shop for all your needs. Quality products at affordable prices.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <% if (user) { %>
+              <li><a href="/cart">Cart</a></li>
+              <li><a href="/orders">Orders</a></li>
+            <% } %>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Follow Us</h4>
+          <div class="social-icons">
+            <a href="#" class="social-link">Facebook</a>
+            <a href="#" class="social-link">Twitter</a>
+            <a href="#" class="social-link">Instagram</a>
+            <a href="#" class="social-link">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

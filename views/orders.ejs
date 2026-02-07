@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - E-Commerce Site</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>E-Commerce</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/products" class="nav-link">Products</a></li>
+                    <li><a href="/cart" class="nav-link">Cart (<%= cartCount || 0 %>)</a></li>
+                    <li><a href="/orders" class="nav-link active">Orders</a></li>
+                    <li><a href="/profile" class="nav-link">Profile</a></li>
+                    <% if (user.role === 'admin') { %>
+                        <li><a href="/admin" class="nav-link">Admin</a></li>
+                    <% } %>
+                    <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding-top: 80px;">
+        <!-- Order History Header Section -->
+        <section class="orders-header-section">
+            <div class="container">
+                <h1 class="section-title">Order History</h1>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section class="orders-section">
+            <div class="container">
+                <% if (!orders || orders.length === 0) { %>
+                    <div class="empty-orders">
+                        <div class="empty-orders-icon">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#6c757d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>You haven't placed any orders yet</h3>
+                        <p>Start shopping to see your order history here.</p>
+                        <a href="/products" class="btn-primary">Start Shopping</a>
+                    </div>
+                <% } else { %>
+                    <div class="orders-grid">
+                        <% orders.forEach(order => { %>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">Order #<%= order.id %></div>
+                                    <div class="order-date"><%= new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+                                </div>
+                                <div class="order-items-preview">
+                                    <div class="order-items-count"><%= order.item_count %> item<%= order.item_count !== 1 ? 's' : '' %></div>
+                                    <!-- Note: For a full implementation, you'd need to fetch actual order items with images -->
+                                    <div class="order-items-thumbnails">
+                                        <!-- Placeholder thumbnails - in a real app, these would be actual product images -->
+                                        <% for (let i = 0; i < Math.min(order.item_count, 3); i++) { %>
+                                            <div class="item-thumbnail">
+                                                <img src="https://picsum.photos/40/40?random=<%= order.id + i %>" alt="Product">
+                                            </div>
+                                        <% } %>
+                                        <% if (order.item_count > 3) { %>
+                                            <div class="more-items">+<%= order.item_count - 3 %></div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="order-footer">
+                                    <div class="order-total">
+                                        <span class="total-label">Total:</span>
+                                        <span class="total-amount">$<%= order.total_amount %></span>
+                                    </div>
+                                    <div class="order-status status-<%= order.status.toLowerCase() %>">
+                                        <%= order.status.charAt(0).toUpperCase() + order.status.slice(1) %>
+                                    </div>
+                                </div>
+                                <div class="order-actions">
+                                    <a href="/orders/<%= order.id %>" class="view-details-btn">View Details</a>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>E-Commerce</h3>
+                    <p>Your one-stop shop for all your needs. Quality products at affordable prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/products">Products</a></li>
+                        <% if (user) { %>
+                            <li><a href="/cart">Cart</a></li>
+                            <li><a href="/orders">Orders</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>

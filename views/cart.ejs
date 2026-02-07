@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - E-Commerce Site</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>E-Commerce</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/products" class="nav-link">Products</a></li>
+                    <li><a href="/cart" class="nav-link active">Cart (<%= cartItems ? cartItems.length : 0 %>)</a></li>
+                    <% if (user) { %>
+                        <li><a href="/orders" class="nav-link">Orders</a></li>
+                        <li><a href="/profile" class="nav-link">Profile</a></li>
+                        <% if (user.role === 'admin') { %>
+                            <li><a href="/admin" class="nav-link">Admin</a></li>
+                        <% } %>
+                        <li><a href="/auth/logout" class="nav-link">Logout</a></li>
+                    <% } else { %>
+                        <li><a href="/auth/login" class="nav-link">Login</a></li>
+                        <li><a href="/auth/register" class="nav-link">Register</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding-top: 80px;">
+        <!-- Cart Header Section -->
+        <section class="cart-header-section">
+            <div class="container">
+                <h1 class="section-title">Shopping Cart</h1>
+            </div>
+        </section>
+
+        <!-- Cart Items Section -->
+        <section class="cart-section">
+            <div class="container">
+                <% if (!cartItems || cartItems.length === 0) { %>
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 3H5L5.4 5M7 13H19L21 5H5.4M7 13L5.4 5M7 13L4.707 15.293C4.077 15.923 4.523 17 5.414 17H17M17 17C15.895 17 15 17.895 15 19C15 20.105 15.895 21 17 21C18.105 21 19 20.105 19 19C19 17.895 18.105 17 17 17ZM9 19C9 20.105 8.105 21 7 21C5.895 21 5 20.105 5 19C5 17.895 5.895 17 7 17C8.105 17 9 17.895 9 19Z" stroke="#6c757d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Your cart is empty</h3>
+                        <p>Looks like you haven't added anything to your cart yet.</p>
+                        <a href="/products" class="btn-primary">Continue Shopping</a>
+                    </div>
+                <% } else { %>
+                    <div class="cart-grid">
+                        <% cartItems.forEach(item => { %>
+                            <div class="cart-item-card">
+                                <div class="cart-item-image">
+                                    <img src="<%= item.image_url || 'https://picsum.photos/280/200?random=' + item.id %>" alt="<%= item.name %>">
+                                </div>
+                                <div class="cart-item-info">
+                                    <h3 class="cart-item-title"><%= item.name %></h3>
+                                    <div class="cart-item-price">$<%= item.price %></div>
+                                    <div class="cart-item-controls">
+                                        <form action="/cart/update/<%= item.id %>" method="POST" class="quantity-form">
+                                            <label for="quantity-<%= item.id %>">Quantity:</label>
+                                            <input type="number" id="quantity-<%= item.id %>" name="quantity" value="<%= item.quantity %>" min="1" max="99" class="quantity-input">
+                                            <button type="submit" class="update-btn">Update</button>
+                                        </form>
+                                        <form action="/cart/remove/<%= item.id %>" method="POST" class="remove-form">
+                                            <button type="submit" class="remove-btn">Remove</button>
+                                        </form>
+                                    </div>
+                                    <div class="cart-item-total">
+                                        <strong>Total: $<%= (item.price * item.quantity).toFixed(2) %></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+
+                    <!-- Cart Summary Section -->
+                    <div class="cart-summary">
+                        <div class="cart-summary-content">
+                            <div class="cart-summary-row">
+                                <span>Subtotal (<%= cartItems.length %> items):</span>
+                                <span>$<%= total.toFixed(2) %></span>
+                            </div>
+                            <div class="cart-summary-row total-row">
+                                <span><strong>Total:</strong></span>
+                                <span><strong>$<%= total.toFixed(2) %></strong></span>
+                            </div>
+                            <a href="/orders/checkout" class="checkout-btn">Proceed to Checkout</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>E-Commerce</h3>
+                    <p>Your one-stop shop for all your needs. Quality products at affordable prices.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/products">Products</a></li>
+                        <% if (user) { %>
+                            <li><a href="/cart">Cart</a></li>
+                            <li><a href="/orders">Orders</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 E-Commerce Site. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
